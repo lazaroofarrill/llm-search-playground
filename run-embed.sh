@@ -4,4 +4,4 @@
 deno  --allow-env \
   --allow-net \
   --env-file \
-  deno/functions/generate-embeddings.ts $@
+  deno/functions/generate-embeddings.ts "$@"

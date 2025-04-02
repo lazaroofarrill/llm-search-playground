@@ -33,7 +33,7 @@ await client.connect();
 
 const EMBEDDING_MODEL = values.model ?? "mxbai-embed-large";
 const VECTOR_COLUMN = EMBEDDING_MODEL.split("-")[0] + "_vector";
-// console.log({ values, EMBEDDING_MODEL });
+console.log({ values, EMBEDDING_MODEL });
 
 {
   const result = await client.queryArray(
@@ -62,7 +62,7 @@ const VECTOR_COLUMN = EMBEDDING_MODEL.split("-")[0] + "_vector";
 
     const embeddings = await response.json();
 
-    console.log({ embeddings });
+    // console.log({ embeddings });
 
     assert(response.status, 200);
     assert(embeddings.embeddings.length, rows.length);
@@ -71,7 +71,7 @@ const VECTOR_COLUMN = EMBEDDING_MODEL.split("-")[0] + "_vector";
     const queryString = `INSERT INTO public.cv_vectors(id, ${VECTOR_COLUMN})
     VALUES ${rows.map((_r, idx) => `($ID_${idx}, $VECT_${idx})`).join(",\n")}
     ON CONFLICT (id) DO UPDATE
-    SET ${VECTOR_COLUMN} = EXCLUDED.${VECTOR_COLUMN}`;
+    SET ${VECTOR_COLUMN} = public.cv_vectors.${VECTOR_COLUMN}`;
 
     const queryArgs = {};
 
